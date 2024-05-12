@@ -1,0 +1,28 @@
+<app-header [title]="title"></app-header>
+
+<p>home works!</p>
+
+<a [routerLink]="'/aboutus'">About Us</a>
+
+<h2>Vacances</h2>
+
+<div>
+    <ul>
+        <li *ngFor="let vacanca of vacances">{{vacanca.nom}}</li>
+    </ul>
+</div>
+
+<h2>Nova Vacança</h2>
+
+<form [formGroup]="vacancaForm">
+    <div>
+        Nom: <input type="text" formControlName="nom"><br>
+        Preu: <input type="text" formControlName="preu"><br>
+        descripcio: <input type="text" formControlName="descripcio"><br>
+        actiu: <input type="checkbox" formControlName="actiu"><br>
+        user: <input type="text" formControlName="user"><br>
+        <button type="button" (click)=saveVacanca()>Guardar</button>
+    </div>
+</form>
+
+
