@@ -1,15 +1,18 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IVacanca } from '../../model/interfaces';
 import { VacancesService } from '../../services/vacances.service';
+import { VacancaFormComponent } from '../../shared/components/vacanca-form/vacanca-form.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { BasicDialogComponent } from '../../shared/components/basic-dialog/basic-dialog.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, HeaderComponent, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, HeaderComponent, VacancaFormComponent, MatIconModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -19,9 +22,11 @@ export class HomeComponent implements OnInit {
 
   vacances: IVacanca[] = []
   title;
-  vacancaForm!: FormGroup;
+  buttonName = 'Guardar';
 
-  constructor() {
+  constructor(private router: Router,
+    public dialog: MatDialog
+  ) {
     console.log('constructor');
     this.title = 'Title';
   }
@@ -29,40 +34,35 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     console.log('ngOnInit', this.title);
     this.getVacances();
-    this.createForm();
   }
 
   getVacances() {
     this.vacances = this.vacancesService.getVacances();
   }
 
-  createForm() {
-    this.vacancaForm = new FormGroup({
-      nom: new FormControl('', [Validators.required]),
-      preu: new FormControl(''),
-      descripcio: new FormControl(''),
-      actiu: new FormControl(''),
-      user: new FormControl(''),
+  saveVacanca(v: IVacanca) {
+    this.vacancesService.setVacanca(v);
+    this.getVacances();
+  }
+
+  goToEdit(index: number) {
+    console.log(index);
+    this.router.navigate(['/edit', index]);
+  }
+
+  removeItem(index: number) {
+    const dialogRef = this.dialog.open(BasicDialogComponent, {
+      data: {message: 'Estás segur de voler eliminar aquesta vacanca?'},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+      if(result) {
+        this.vacancesService.removeVacancaByIndex(index);
+        this.getVacances();  
+      }
     });
   }
 
-  saveVacanca() {
-    console.log(this.vacancaForm);
-
-    if(this.vacancaForm.valid) {
-      const v: IVacanca = {
-        nom: this.vacancaForm.get('nom')?.value,
-        preu: +this.vacancaForm.get('preu')?.value,
-        descripcio: this.vacancaForm.get('descripcio')?.value,
-        actiu: true,
-        user: this.vacancaForm.get('user')?.value,
-      }
-      this.vacancesService.setVacanca(v);
-      this.getVacances();
-    } else {
-      console.log('INVALID!!!');
-    }
-    
-  }
 
 }
