@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
 
   goToEdit(index: number) {
     console.log(index);
-    this.router.navigate(['/edit', index]);
+    this.router.navigate(['/private/edit', index]);
   }
 
   removeItem(index: number) {

@@ -37,7 +37,7 @@ export class EditComponent implements OnInit {
 
   editVacanca(v: IVacanca) {
     this.vacancesService.editVacanca(this.index, v);
-    this.route.navigate(['/home']);
+    this.route.navigate(['/private/home']);
   }
 
 }
