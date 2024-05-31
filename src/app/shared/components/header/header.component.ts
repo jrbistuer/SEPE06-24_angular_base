@@ -15,6 +15,8 @@ export class HeaderComponent {
 
   @Input() title!: string
 
+  email = 'test@test.com';
+
   constructor(private router: Router) {
 
   }

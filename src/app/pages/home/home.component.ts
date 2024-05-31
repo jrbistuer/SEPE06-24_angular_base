@@ -37,7 +37,12 @@ export class HomeComponent implements OnInit {
   }
 
   getVacances() {
-    this.vacances = this.vacancesService.getVacances();
+   // this.vacances = this.vacancesService.getVacances();
+   this.vacancesService.getVacances().subscribe((vacances: IVacanca[]) => {
+      this.vacances = vacances;
+      console.log(this.vacances);
+      
+   })
   }
 
   saveVacanca(v: IVacanca) {

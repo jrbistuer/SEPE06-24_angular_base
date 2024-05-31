@@ -30,7 +30,7 @@ export class EditComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
       this.index = params['id'];
-      this.vacanca = this.vacancesService.getVacancaByIndex(this.index);
+      //this.vacanca = this.vacancesService.getVacancaByIndex(this.index);
       console.log(this.vacanca);
     })
   }
